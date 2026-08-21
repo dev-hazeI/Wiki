@@ -13,12 +13,12 @@
 
   <meta
     name="description"
-    content="Hazel — Minecraft Developer specializing in plugins and server development."
+    content="Hazel's Minecraft development wiki — plugins, projects, guides, and documentation."
   >
 
   <meta name="theme-color" content="#0d070a">
 
-  <title>Hazel — Minecraft Developer</title>
+  <title>Hazel Wiki</title>
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -32,18 +32,23 @@
     :root {
       --bg: #0d070a;
       --bg-soft: #140b0f;
+
       --card: rgba(28, 14, 20, 0.72);
       --card-hover: rgba(40, 18, 27, 0.88);
 
-      --green: #e889a8;
-      --green-bright: #ffacc5;
-      --green-dark: #a94d70;
+      --pink: #e889a8;
+      --pink-bright: #ffacc5;
+      --pink-dark: #a94d70;
 
       --text: #fff1f5;
       --muted: #b89ca7;
 
       --border: rgba(255, 153, 185, 0.15);
-      --shadow: 0 20px 70px rgba(0, 0, 0, 0.4);
+
+      --sidebar: 255px;
+
+      --shadow:
+        0 20px 70px rgba(0, 0, 0, 0.4);
     }
 
     * {
@@ -57,30 +62,42 @@
     }
 
     body {
+      min-height: 100vh;
+
       font-family: "Inter", sans-serif;
+
       color: var(--text);
+
       background: var(--bg);
+
+      line-height: 1.7;
+
       overflow-x: hidden;
-      line-height: 1.6;
     }
+
+    /* ========================================
+       BACKGROUND
+    ======================================== */
 
     .background {
       position: fixed;
       inset: 0;
-      z-index: -3;
+
+      z-index: -5;
 
       background:
         linear-gradient(
-          rgba(13, 6, 9, 0.72),
-          rgba(13, 6, 9, 0.92)
+          rgba(13, 6, 9, 0.78),
+          rgba(13, 6, 9, 0.94)
         ),
-        url("bg.png") center / cover no-repeat;
+        url("background.png") center / cover no-repeat;
 
       transform: scale(1.03);
     }
 
     .background::after {
       content: "";
+
       position: absolute;
       inset: 0;
 
@@ -99,17 +116,20 @@
 
     .glow {
       position: fixed;
+
       width: 450px;
       height: 450px;
 
       border-radius: 50%;
 
-      background: rgba(232, 137, 168, 0.08);
+      background:
+        rgba(232, 137, 168, 0.07);
 
       filter: blur(100px);
 
       pointer-events: none;
-      z-index: -2;
+
+      z-index: -3;
     }
 
     .glow.one {
@@ -118,9 +138,13 @@
     }
 
     .glow.two {
-      bottom: -220px;
       right: -160px;
+      bottom: -220px;
     }
+
+    /* ========================================
+       FALLING PETALS
+    ======================================== */
 
     .falling-leaves {
       position: fixed;
@@ -133,7 +157,7 @@
 
       pointer-events: none;
 
-      z-index: 2;
+      z-index: 20;
     }
 
     .falling-leaf {
@@ -141,8 +165,8 @@
 
       top: -40px;
 
-      width: 12px;
-      height: 12px;
+      width: 10px;
+      height: 10px;
 
       background:
         radial-gradient(
@@ -153,11 +177,12 @@
 
       border-radius: 100% 0 100% 0;
 
-      opacity: 0.45;
+      opacity: 0.4;
 
-      filter: drop-shadow(
-        0 0 6px rgba(255, 172, 197, 0.2)
-      );
+      filter:
+        drop-shadow(
+          0 0 6px rgba(255, 172, 197, 0.2)
+        );
 
       animation:
         leafFall linear infinite,
@@ -166,11 +191,19 @@
 
     @keyframes leafFall {
       from {
-        transform: translate3d(0, -50px, 0) rotate(0deg);
+        transform:
+          translate3d(0, -50px, 0)
+          rotate(0deg);
       }
 
       to {
-        transform: translate3d(var(--drift), 110vh, 0) rotate(var(--rotation));
+        transform:
+          translate3d(
+            var(--drift),
+            110vh,
+            0
+          )
+          rotate(var(--rotation));
       }
     }
 
@@ -184,14 +217,23 @@
       }
     }
 
+    /* ========================================
+       TOP BAR
+    ======================================== */
+
     .top-info {
       position: relative;
 
+      z-index: 101;
+
       width: 100%;
 
-      padding: 10px 6%;
+      min-height: 34px;
+
+      padding: 7px 20px;
 
       display: flex;
+
       justify-content: center;
       align-items: center;
 
@@ -199,824 +241,1030 @@
 
       color: #b7a0aa;
 
-      background: rgba(10, 5, 7, 0.7);
+      background:
+        rgba(10, 5, 7, 0.75);
 
-      border-bottom: 1px solid rgba(232, 137, 168, 0.09);
+      border-bottom:
+        1px solid rgba(232, 137, 168, 0.09);
 
-      font-size: 0.75rem;
+      font-size: 0.72rem;
 
-      z-index: 101;
-    }
-
-    .top-info span {
-      white-space: nowrap;
+      text-align: center;
     }
 
     .top-info strong {
-      color: var(--green);
+      color: var(--pink);
+
       font-weight: 600;
     }
+
+    /* ========================================
+       NAVIGATION
+    ======================================== */
 
     nav {
       position: fixed;
 
-      top: 37px;
+      top: 50px;
       left: 50%;
 
       transform: translateX(-50%);
 
-      width: 92%;
-      max-width: 1120px;
+      width: min(1180px, 92%);
 
       z-index: 100;
 
-      padding: 18px 24px;
+      padding: 15px 22px;
 
       display: flex;
+
       align-items: center;
+
       justify-content: space-between;
 
-      background: rgba(10, 5, 7, 0.62);
+      background:
+        rgba(10, 5, 7, 0.65);
 
       backdrop-filter: blur(18px);
+      -webkit-backdrop-filter: blur(18px);
 
-      border: 1px solid rgba(232, 137, 168, 0.13);
+      border:
+        1px solid rgba(232, 137, 168, 0.13);
 
-      border-radius: 18px;
+      border-radius: 17px;
+
+      box-shadow:
+        0 15px 45px rgba(0, 0, 0, 0.25);
     }
 
     .logo {
-      font-family: "Space Grotesk", sans-serif;
+      display: flex;
 
-      font-size: 1.35rem;
-      font-weight: 700;
+      align-items: center;
+
+      gap: 10px;
 
       color: var(--text);
 
-      text-decoration: none;
-    }
+      font-family:
+        "Space Grotesk",
+        sans-serif;
 
-    .logo span {
-      color: var(--green);
-    }
+      font-size: 1.25rem;
 
-    .nav-links {
-      display: flex;
-      gap: 30px;
-
-      list-style: none;
-    }
-
-    .nav-links a {
-      color: #c9b4bd;
+      font-weight: 700;
 
       text-decoration: none;
-
-      font-size: 0.9rem;
-      font-weight: 500;
-
-      transition: 0.25s ease;
     }
 
-    .nav-links a:hover {
-      color: var(--green-bright);
-    }
-
-    .nav-button {
-      padding: 9px 16px;
-
-      border: 1px solid rgba(232, 137, 168, 0.3);
-
-      border-radius: 10px;
-
-      color: var(--green-bright) !important;
-
-      background: rgba(232, 137, 168, 0.06);
-    }
-
-    .container {
-      width: min(1120px, 90%);
-      margin: auto;
-    }
-
-    section {
-      padding: 110px 0;
-      scroll-margin-top: 110px;
-    }
-
-    .hero {
-      min-height: 100vh;
-
-      display: flex;
-      align-items: center;
-
-      padding-top: 170px;
-    }
-
-    .hero-grid {
-      display: grid;
-
-      grid-template-columns: 1.25fr 0.75fr;
-
-      gap: 70px;
-
-      align-items: center;
-    }
-
-    .eyebrow {
-      display: inline-flex;
-      align-items: center;
-
-      gap: 9px;
-
-      padding: 7px 12px;
-
-      margin-bottom: 22px;
-
-      border: 1px solid var(--border);
-      border-radius: 100px;
-
-      background: rgba(232, 137, 168, 0.055);
-
-      color: var(--green-bright);
-
-      font-size: 0.78rem;
-      font-weight: 600;
-    }
-
-    .status-dot {
-      width: 7px;
-      height: 7px;
-
-      border-radius: 50%;
-
-      background: #ff91b3;
-
-      box-shadow: 0 0 12px #ff91b3;
-    }
-
-    h1 {
-      font-family: "Space Grotesk", sans-serif;
-
-      font-size: clamp(3.3rem, 7vw, 6rem);
-
-      line-height: 0.98;
-
-      letter-spacing: -0.055em;
-
-      max-width: 800px;
-    }
-
-    h1 .accent {
-      color: var(--green);
-    }
-
-    .hero-description {
-      max-width: 620px;
-
-      margin-top: 25px;
-
-      color: var(--muted);
-
-      font-size: 1.08rem;
-    }
-
-    .hero-description strong {
-      color: #f2d5df;
-      font-weight: 600;
-    }
-
-    .hero-buttons {
-      display: flex;
-
-      gap: 13px;
-
-      margin-top: 32px;
-
-      flex-wrap: wrap;
-    }
-
-    .button {
-      display: inline-flex;
-
-      align-items: center;
-      justify-content: center;
-
-      gap: 9px;
-
-      padding: 13px 19px;
-
-      border-radius: 11px;
-
-      text-decoration: none;
-
-      font-size: 0.9rem;
-      font-weight: 600;
-
-      transition: 0.25s ease;
-    }
-
-    .button-primary {
-      color: #16080d;
-
-      background: var(--green);
-
-      box-shadow: 0 10px 35px rgba(232, 137, 168, 0.14);
-    }
-
-    .button-primary:hover {
-      transform: translateY(-2px);
-
-      background: var(--green-bright);
-
-      box-shadow: 0 14px 40px rgba(232, 137, 168, 0.22);
-    }
-
-    .button-secondary {
-      color: #ead9df;
-
-      border: 1px solid var(--border);
-
-      background: rgba(255, 255, 255, 0.035);
-    }
-
-    .button-secondary:hover {
-      transform: translateY(-2px);
-
-      border-color: rgba(232, 137, 168, 0.3);
-
-      background: rgba(232, 137, 168, 0.07);
-    }
-
-    .profile-wrap {
-      position: relative;
-
-      display: flex;
-      justify-content: center;
-    }
-
-    .profile-ring {
-      position: relative;
-
-      width: min(340px, 75vw);
-
-      aspect-ratio: 1;
-
-      padding: 8px;
-
-      border-radius: 50%;
-
-      background:
-        linear-gradient(
-          145deg,
-          rgba(255, 172, 197, 0.8),
-          rgba(169, 77, 112, 0.1),
-          rgba(255, 172, 197, 0.5)
-        );
-
-      box-shadow:
-        0 0 0 1px rgba(255, 172, 197, 0.08),
-        0 30px 90px rgba(0, 0, 0, 0.5),
-        0 0 80px rgba(232, 137, 168, 0.1);
-
-      animation: float 6s ease-in-out infinite;
-    }
-
-    .profile-ring::before {
-      content: "";
-
-      position: absolute;
-
-      inset: -20px;
-
-      border-radius: 50%;
-
-      border: 1px solid rgba(232, 137, 168, 0.09);
-
-      animation: spin 22s linear infinite;
-    }
-
-    .profile {
-      width: 100%;
-      height: 100%;
+    .logo img {
+      width: 34px;
+      height: 34px;
 
       object-fit: cover;
 
       border-radius: 50%;
 
-      display: block;
-
-      border: 7px solid #12090d;
-
-      background: #1a0d13;
+      border:
+        2px solid rgba(232, 137, 168, 0.4);
     }
 
-    .leaf {
-      position: absolute;
-
-      font-size: 1.8rem;
-
-      opacity: 0.8;
-
-      filter: drop-shadow(
-        0 0 10px rgba(232, 137, 168, 0.25)
-      );
+    .logo span {
+      color: var(--pink);
     }
 
-    .leaf.a {
-      top: 3%;
-      right: 3%;
+    .nav-right {
+      display: flex;
 
-      transform: rotate(25deg);
+      align-items: center;
+
+      gap: 10px;
     }
 
-    .leaf.b {
-      bottom: 8%;
-      left: 1%;
+    .github-button {
+      display: inline-flex;
 
-      transform: rotate(-30deg);
+      align-items: center;
+
+      gap: 7px;
+
+      padding: 8px 14px;
+
+      color: var(--pink-bright);
+
+      background:
+        rgba(232, 137, 168, 0.05);
+
+      border:
+        1px solid rgba(232, 137, 168, 0.25);
+
+      border-radius: 9px;
+
+      text-decoration: none;
+
+      font-size: 0.82rem;
+
+      font-weight: 600;
+
+      transition: 0.25s ease;
     }
 
-    .section-label {
-      color: var(--green);
+    .github-button:hover {
+      transform: translateY(-2px);
+
+      background:
+        rgba(232, 137, 168, 0.1);
+
+      border-color:
+        rgba(232, 137, 168, 0.4);
+    }
+
+    /* ========================================
+       MAIN LAYOUT
+    ======================================== */
+
+    .layout {
+      width: min(1200px, 92%);
+
+      margin: 0 auto;
+
+      display: grid;
+
+      grid-template-columns:
+        var(--sidebar) minmax(0, 1fr);
+
+      gap: 35px;
+
+      padding-top: 150px;
+
+      padding-bottom: 80px;
+    }
+
+    /* ========================================
+       SIDEBAR
+    ======================================== */
+
+    .sidebar {
+      position: sticky;
+
+      top: 145px;
+
+      height: fit-content;
+
+      padding: 20px;
+
+      background:
+        rgba(20, 10, 15, 0.65);
+
+      backdrop-filter: blur(15px);
+      -webkit-backdrop-filter: blur(15px);
+
+      border:
+        1px solid var(--border);
+
+      border-radius: 17px;
+
+      box-shadow: var(--shadow);
+    }
+
+    .sidebar-title {
+      margin-bottom: 12px;
+
+      color: var(--pink);
 
       text-transform: uppercase;
 
-      letter-spacing: 0.18em;
+      letter-spacing: 0.15em;
+
+      font-size: 0.68rem;
+
+      font-weight: 700;
+    }
+
+    .search {
+      width: 100%;
+
+      padding: 11px 12px;
+
+      margin-bottom: 20px;
+
+      color: var(--text);
+
+      background:
+        rgba(255, 255, 255, 0.035);
+
+      border:
+        1px solid var(--border);
+
+      border-radius: 9px;
+
+      outline: none;
+
+      font-family: inherit;
+
+      font-size: 0.82rem;
+
+      transition: 0.25s ease;
+    }
+
+    .search::placeholder {
+      color: #806c75;
+    }
+
+    .search:focus {
+      border-color:
+        rgba(232, 137, 168, 0.4);
+
+      box-shadow:
+        0 0 0 3px
+        rgba(232, 137, 168, 0.05);
+    }
+
+    .wiki-nav {
+      list-style: none;
+    }
+
+    .wiki-nav li {
+      margin-bottom: 4px;
+    }
+
+    .wiki-nav button {
+      width: 100%;
+
+      padding: 10px 12px;
+
+      text-align: left;
+
+      color: #bca5ae;
+
+      background: transparent;
+
+      border:
+        1px solid transparent;
+
+      border-radius: 9px;
+
+      cursor: pointer;
+
+      font-family: inherit;
+
+      font-size: 0.84rem;
+
+      transition: 0.2s ease;
+    }
+
+    .wiki-nav button:hover {
+      color: var(--pink-bright);
+
+      background:
+        rgba(232, 137, 168, 0.055);
+    }
+
+    .wiki-nav button.active {
+      color: var(--pink-bright);
+
+      background:
+        rgba(232, 137, 168, 0.08);
+
+      border-color:
+        rgba(232, 137, 168, 0.13);
+    }
+
+    .nav-category {
+      padding:
+        16px 10px 6px;
+
+      color: #705c65;
+
+      text-transform: uppercase;
+
+      letter-spacing: 0.13em;
+
+      font-size: 0.64rem;
+
+      font-weight: 700;
+    }
+
+    /* ========================================
+       WIKI CONTENT
+    ======================================== */
+
+    main {
+      min-width: 0;
+    }
+
+    .wiki-page {
+      display: none;
+
+      animation:
+        pageIn 0.35s ease;
+    }
+
+    .wiki-page.active {
+      display: block;
+    }
+
+    @keyframes pageIn {
+      from {
+        opacity: 0;
+
+        transform:
+          translateY(8px);
+      }
+
+      to {
+        opacity: 1;
+
+        transform:
+          translateY(0);
+      }
+    }
+
+    .page-header {
+      margin-bottom: 35px;
+    }
+
+    .eyebrow {
+      display: inline-flex;
+
+      align-items: center;
+
+      gap: 8px;
+
+      padding: 6px 11px;
+
+      margin-bottom: 17px;
+
+      color: var(--pink-bright);
+
+      background:
+        rgba(232, 137, 168, 0.05);
+
+      border:
+        1px solid var(--border);
+
+      border-radius: 100px;
 
       font-size: 0.72rem;
 
-      font-weight: 700;
-
-      margin-bottom: 10px;
+      font-weight: 600;
     }
 
-    .section-title {
-      font-family: "Space Grotesk", sans-serif;
+    .status-dot {
+      width: 6px;
+      height: 6px;
 
-      font-size: clamp(2rem, 4vw, 3rem);
+      border-radius: 50%;
 
-      letter-spacing: -0.04em;
+      background: #ff91b3;
 
+      box-shadow:
+        0 0 10px #ff91b3;
+    }
+
+    h1,
+    h2,
+    h3 {
+      font-family:
+        "Space Grotesk",
+        sans-serif;
+    }
+
+    h1 {
+      margin-bottom: 17px;
+
+      font-size:
+        clamp(2.5rem, 6vw, 4.5rem);
+
+      line-height: 1;
+
+      letter-spacing: -0.055em;
+    }
+
+    h1 .accent {
+      color: var(--pink);
+    }
+
+    h2 {
+      margin-top: 42px;
       margin-bottom: 14px;
+
+      font-size: 1.7rem;
+
+      line-height: 1.2;
+
+      letter-spacing: -0.03em;
     }
 
-    .section-description {
+    h3 {
+      margin-top: 27px;
+      margin-bottom: 10px;
+
+      font-size: 1.1rem;
+    }
+
+    p {
+      margin-bottom: 17px;
+
       color: var(--muted);
-
-      max-width: 650px;
     }
+
+    .lead {
+      max-width: 720px;
+
+      color: #cbb3bc;
+
+      font-size: 1.05rem;
+    }
+
+    /* ========================================
+       CARDS
+    ======================================== */
 
     .card {
-      padding: 28px;
+      padding: 25px;
 
-      border: 1px solid var(--border);
+      margin: 22px 0;
 
-      border-radius: 18px;
-
-      background: var(--card);
+      background:
+        var(--card);
 
       backdrop-filter: blur(15px);
+      -webkit-backdrop-filter: blur(15px);
+
+      border:
+        1px solid var(--border);
+
+      border-radius: 16px;
+
+      box-shadow: var(--shadow);
+
+      transition: 0.25s ease;
+    }
+
+    .card:hover {
+      background:
+        var(--card-hover);
+
+      border-color:
+        rgba(232, 137, 168, 0.22);
+    }
+
+    .card h3:first-child {
+      margin-top: 0;
+    }
+
+    /* ========================================
+       WELCOME
+    ======================================== */
+
+    .welcome {
+      position: relative;
+
+      overflow: hidden;
+
+      padding: 42px;
+
+      margin-bottom: 25px;
+
+      background:
+        radial-gradient(
+          circle at 85% 15%,
+          rgba(232, 137, 168, 0.13),
+          transparent 34%
+        ),
+        rgba(24, 11, 17, 0.76);
+
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+
+      border:
+        1px solid rgba(232, 137, 168, 0.2);
+
+      border-radius: 22px;
+
+      box-shadow: var(--shadow);
+    }
+
+    .welcome h1 {
+      max-width: 700px;
+    }
+
+    .welcome p {
+      max-width: 700px;
+    }
+
+    /* ========================================
+       QUICK LINKS
+    ======================================== */
+
+    .quick-links {
+      display: grid;
+
+      grid-template-columns:
+        repeat(2, minmax(0, 1fr));
+
+      gap: 13px;
+
+      margin-top: 28px;
+    }
+
+    .quick-link {
+      display: block;
+
+      padding: 18px;
+
+      color: var(--text);
+
+      background:
+        rgba(255, 255, 255, 0.025);
+
+      border:
+        1px solid var(--border);
+
+      border-radius: 13px;
+
+      text-decoration: none;
+
+      transition: 0.25s ease;
+    }
+
+    .quick-link:hover {
+      color: var(--pink-bright);
+
+      background:
+        rgba(232, 137, 168, 0.06);
+
+      border-color:
+        rgba(232, 137, 168, 0.28);
+
+      transform:
+        translateY(-3px);
+    }
+
+    .quick-link strong {
+      display: block;
+
+      margin-bottom: 4px;
+
+      font-family:
+        "Space Grotesk",
+        sans-serif;
+    }
+
+    .quick-link span {
+      color: var(--muted);
+
+      font-size: 0.78rem;
+    }
+
+    /* ========================================
+       PROJECTS
+    ======================================== */
+
+    .projects {
+      display: grid;
+
+      grid-template-columns:
+        repeat(2, minmax(0, 1fr));
+
+      gap: 18px;
+
+      margin-top: 25px;
+    }
+
+    .project-card {
+      display: flex;
+
+      flex-direction: column;
+
+      min-height: 300px;
+
+      padding: 26px;
+
+      background:
+        var(--card);
+
+      backdrop-filter: blur(15px);
+      -webkit-backdrop-filter: blur(15px);
+
+      border:
+        1px solid var(--border);
+
+      border-radius: 17px;
 
       box-shadow: var(--shadow);
 
       transition: 0.3s ease;
     }
 
-    .card:hover {
-      transform: translateY(-5px);
+    .project-card:hover {
+      transform:
+        translateY(-5px);
 
-      background: var(--card-hover);
+      background:
+        var(--card-hover);
 
-      border-color: rgba(232, 137, 168, 0.22);
-    }
-
-    .card h3 {
-      font-family: "Space Grotesk", sans-serif;
-
-      margin-bottom: 11px;
-
-      font-size: 1.15rem;
-    }
-
-    .card p {
-      color: var(--muted);
-
-      font-size: 0.94rem;
-    }
-
-    .about-grid {
-      display: grid;
-
-      grid-template-columns: 1fr 1fr;
-
-      gap: 25px;
-
-      margin-top: 45px;
-    }
-
-    .stats {
-      display: grid;
-
-      grid-template-columns: repeat(3, 1fr);
-
-      gap: 15px;
-
-      margin-top: 25px;
-    }
-
-    .stat {
-      padding: 22px;
-
-      text-align: center;
-
-      border-radius: 15px;
-
-      background: rgba(232, 137, 168, 0.045);
-
-      border: 1px solid var(--border);
-    }
-
-    .stat-number {
-      display: block;
-
-      color: var(--green-bright);
-
-      font-family: "Space Grotesk", sans-serif;
-
-      font-size: 1.7rem;
-
-      font-weight: 700;
-    }
-
-    .stat-label {
-      color: var(--muted);
-
-      font-size: 0.76rem;
-
-      margin-top: 2px;
-    }
-
-    .skills {
-      display: flex;
-
-      flex-wrap: wrap;
-
-      gap: 11px;
-
-      margin-top: 35px;
-    }
-
-    .skill {
-      padding: 10px 14px;
-
-      border: 1px solid var(--border);
-
-      border-radius: 10px;
-
-      background: rgba(30, 13, 20, 0.65);
-
-      color: #dec8d0;
-
-      font-size: 0.86rem;
-
-      transition: 0.2s;
-    }
-
-    .skill:hover {
-      color: var(--green-bright);
-
-      border-color: rgba(232, 137, 168, 0.3);
-
-      transform: translateY(-2px);
-    }
-
-    .projects-grid {
-      display: grid;
-
-      grid-template-columns: repeat(3, 1fr);
-
-      gap: 18px;
-
-      margin-top: 42px;
-    }
-
-    .project {
-      min-height: 250px;
-
-      display: flex;
-
-      flex-direction: column;
+      border-color:
+        rgba(232, 137, 168, 0.25);
     }
 
     .project-icon {
-      width: 45px;
-      height: 45px;
+      width: 48px;
+      height: 48px;
 
       display: grid;
 
       place-items: center;
 
-      margin-bottom: 25px;
+      margin-bottom: 22px;
+
+      color: var(--pink-bright);
+
+      background:
+        rgba(232, 137, 168, 0.08);
+
+      border:
+        1px solid var(--border);
 
       border-radius: 12px;
 
-      color: var(--green-bright);
+      font-size: 1.35rem;
+    }
 
-      background: rgba(232, 137, 168, 0.08);
-
-      border: 1px solid var(--border);
+    .project-card h3 {
+      margin: 0 0 9px;
 
       font-size: 1.25rem;
     }
 
-    .project h3 {
-      font-family: "Space Grotesk", sans-serif;
+    .project-card p {
+      flex: 1;
 
-      margin-bottom: 8px;
+      font-size: 0.9rem;
     }
 
-    .project p {
-      flex: 1;
+    .project-language {
+      display: inline-flex;
+
+      align-items: center;
+
+      gap: 7px;
+
+      margin-bottom: 16px;
+
+      color: #bca5ae;
+
+      font-size: 0.72rem;
+    }
+
+    .language-dot {
+      width: 8px;
+      height: 8px;
+
+      border-radius: 50%;
+    }
+
+    .java {
+      background: #b07219;
+    }
+
+    .typescript {
+      background: #3178c6;
     }
 
     .project-tags {
       display: flex;
 
-      gap: 7px;
-
       flex-wrap: wrap;
 
-      margin-top: 20px;
+      gap: 7px;
+
+      margin-bottom: 18px;
     }
 
-    .project-tags span {
-      color: #987c88;
-
-      font-size: 0.7rem;
-
+    .tag {
       padding: 5px 8px;
+
+      color: var(--pink-bright);
+
+      background:
+        rgba(232, 137, 168, 0.06);
+
+      border:
+        1px solid var(--border);
 
       border-radius: 6px;
 
-      background: rgba(255, 255, 255, 0.035);
+      font-size: 0.68rem;
+
+      font-weight: 600;
     }
 
-    .services {
-      display: grid;
+    .project-button {
+      display: inline-flex;
 
-      grid-template-columns: repeat(3, 1fr);
+      justify-content: center;
 
-      gap: 18px;
+      align-items: center;
 
-      margin-top: 42px;
-    }
+      gap: 7px;
 
-    .service-number {
-      color: rgba(232, 137, 168, 0.48);
+      width: 100%;
 
-      font-family: "Space Grotesk", sans-serif;
+      padding: 10px 13px;
+
+      color: #16080d;
+
+      background: var(--pink);
+
+      border-radius: 9px;
+
+      text-decoration: none;
 
       font-size: 0.8rem;
 
       font-weight: 700;
 
-      margin-bottom: 28px;
+      transition: 0.25s ease;
     }
 
-    .contact-box {
-      position: relative;
-
-      overflow: hidden;
-
-      padding: 60px;
-
-      border: 1px solid rgba(232, 137, 168, 0.2);
-
-      border-radius: 24px;
+    .project-button:hover {
+      color: #16080d;
 
       background:
-        radial-gradient(
-          circle at 85% 20%,
-          rgba(232, 137, 168, 0.13),
-          transparent 35%
-        ),
-        rgba(24, 11, 17, 0.78);
+        var(--pink-bright);
 
-      backdrop-filter: blur(20px);
-
-      text-align: center;
-
-      box-shadow: var(--shadow);
+      transform:
+        translateY(-2px);
     }
 
-    .contact-box h2 {
-      font-family: "Space Grotesk", sans-serif;
+    /* ========================================
+       TAGS
+    ======================================== */
 
-      font-size: clamp(2.2rem, 5vw, 4rem);
+    .tags {
+      display: flex;
 
-      letter-spacing: -0.05em;
+      flex-wrap: wrap;
+
+      gap: 8px;
+
+      margin: 20px 0;
     }
 
-    .contact-box p {
-      max-width: 560px;
+    /* ========================================
+       CODE
+    ======================================== */
 
-      margin: 15px auto 27px;
+    code {
+      padding: 3px 6px;
+
+      color: var(--pink-bright);
+
+      background:
+        rgba(232, 137, 168, 0.08);
+
+      border-radius: 5px;
+
+      font-family:
+        "SFMono-Regular",
+        Consolas,
+        monospace;
+
+      font-size: 0.87em;
+    }
+
+    pre {
+      overflow-x: auto;
+
+      padding: 20px;
+
+      margin: 20px 0;
+
+      color: #f4dce4;
+
+      background: #0a0508;
+
+      border:
+        1px solid rgba(232, 137, 168, 0.13);
+
+      border-radius: 13px;
+
+      box-shadow:
+        inset 0 0 40px
+        rgba(232, 137, 168, 0.02);
+    }
+
+    pre code {
+      padding: 0;
+
+      color: #e9cbd5;
+
+      background: none;
+
+      font-size: 0.85rem;
+    }
+
+    /* ========================================
+       LISTS
+    ======================================== */
+
+    ul,
+    ol {
+      margin:
+        15px 0 20px 22px;
 
       color: var(--muted);
     }
 
-    .contact-links {
-      display: flex;
-
-      justify-content: center;
-
-      flex-wrap: wrap;
-
-      gap: 11px;
+    li {
+      margin: 6px 0;
     }
 
-    .contact-link {
-      padding: 11px 16px;
-
-      border: 1px solid var(--border);
-
-      border-radius: 10px;
-
-      color: #e1cfd6;
-
-      background: rgba(255, 255, 255, 0.035);
-
-      font-size: 0.84rem;
-
-      transition: 0.25s;
-
-      cursor: default;
+    li::marker {
+      color: var(--pink-dark);
     }
 
-    .contact-link:hover {
-      color: var(--green-bright);
+    /* ========================================
+       TABLE
+    ======================================== */
 
-      border-color: rgba(232, 137, 168, 0.3);
+    .table-wrap {
+      overflow-x: auto;
 
-      transform: translateY(-2px);
-
-      background: rgba(232, 137, 168, 0.07);
+      margin: 20px 0;
     }
+
+    table {
+      width: 100%;
+
+      border-collapse: collapse;
+
+      color: var(--muted);
+
+      font-size: 0.86rem;
+    }
+
+    th,
+    td {
+      padding: 12px 14px;
+
+      text-align: left;
+
+      border-bottom:
+        1px solid var(--border);
+    }
+
+    th {
+      color: var(--pink-bright);
+
+      background:
+        rgba(232, 137, 168, 0.04);
+
+      font-weight: 600;
+    }
+
+    /* ========================================
+       FOOTER
+    ======================================== */
 
     footer {
-      padding: 30px 0 40px;
+      width: min(1200px, 92%);
+
+      margin: 0 auto;
+
+      padding: 30px 0 45px;
 
       color: #76616a;
 
-      font-size: 0.78rem;
-
       text-align: center;
+
+      font-size: 0.75rem;
     }
 
     footer span {
-      color: var(--green-dark);
+      color: var(--pink-dark);
     }
 
-    .reveal {
-      opacity: 0;
+    /* ========================================
+       MOBILE
+    ======================================== */
 
-      transform: translateY(25px);
+    @media (max-width: 900px) {
 
-      transition:
-        opacity 0.7s ease,
-        transform 0.7s ease;
-    }
+      .layout {
+        grid-template-columns: 1fr;
 
-    .reveal.visible {
-      opacity: 1;
-
-      transform: translateY(0);
-    }
-
-    @keyframes float {
-      0%,
-      100% {
-        transform: translateY(0);
+        padding-top: 140px;
       }
 
-      50% {
-        transform: translateY(-12px);
-      }
-    }
-
-    @keyframes spin {
-      from {
-        transform: rotate(0);
+      .sidebar {
+        position: static;
       }
 
-      to {
-        transform: rotate(360deg);
+      .wiki-nav {
+        display: grid;
+
+        grid-template-columns:
+          repeat(2, minmax(0, 1fr));
+
+        gap: 3px;
+      }
+
+      .nav-category {
+        grid-column: 1 / -1;
+      }
+
+      .projects {
+        grid-template-columns: 1fr;
       }
     }
 
-    @media (max-width: 850px) {
+    @media (max-width: 600px) {
+
       .top-info {
-        gap: 12px;
+        flex-wrap: wrap;
 
-        flex-direction: column;
+        gap: 5px 14px;
 
-        padding: 9px 5%;
-
-        font-size: 0.7rem;
+        padding:
+          7px 15px;
       }
 
       nav {
         top: 58px;
-        width: 92%;
-        padding: 16px 20px;
+
+        width: 94%;
+
+        padding:
+          13px 15px;
       }
 
-      .nav-links {
+      .github-button {
         display: none;
       }
 
-      .hero-grid {
-        grid-template-columns: 1fr;
+      .layout {
+        width: 94%;
 
-        text-align: center;
+        padding-top: 130px;
       }
 
-      .hero-description {
-        margin-left: auto;
-        margin-right: auto;
+      .sidebar {
+        padding: 15px;
       }
 
-      .hero-buttons {
-        justify-content: center;
-      }
-
-      .profile-wrap {
-        order: -1;
-      }
-
-      .profile-ring {
-        width: 230px;
-      }
-
-      .about-grid,
-      .projects-grid,
-      .services {
+      .wiki-nav {
         grid-template-columns: 1fr;
       }
 
-      .stats {
-        grid-template-columns: 1fr 1fr 1fr;
+      .nav-category {
+        grid-column: auto;
       }
 
-      section {
-        padding: 80px 0;
+      .welcome {
+        padding: 28px 20px;
 
-        scroll-margin-top: 125px;
-      }
-
-      .hero {
-        padding-top: 180px;
-      }
-    }
-
-    @media (max-width: 500px) {
-      nav {
-        padding: 15px 18px;
-      }
-
-      .hero {
-        padding-top: 180px;
+        border-radius: 17px;
       }
 
       h1 {
-        font-size: 3.2rem;
+        font-size: 2.7rem;
       }
 
-      .stats {
+      h2 {
+        font-size: 1.45rem;
+      }
+
+      .quick-links {
         grid-template-columns: 1fr;
       }
 
-      .contact-box {
-        padding: 38px 20px;
+      .card {
+        padding: 21px;
       }
 
-      .card {
-        padding: 23px;
+      pre {
+        padding: 15px;
       }
     }
 
     @media (prefers-reduced-motion: reduce) {
+
       *,
       *::before,
       *::after {
         scroll-behavior: auto !important;
 
-        animation-duration: 0.01ms !important;
+        animation-duration:
+          0.01ms !important;
 
-        animation-iteration-count: 1 !important;
+        animation-iteration-count:
+          1 !important;
 
-        transition-duration: 0.01ms !important;
+        transition-duration:
+          0.01ms !important;
       }
 
       .falling-leaves {
@@ -1028,488 +1276,1713 @@
 
 <body>
 
+  <!-- ======================================
+       BACKGROUND
+  ======================================= -->
+
   <div class="background"></div>
 
   <div class="glow one"></div>
   <div class="glow two"></div>
 
-  <div class="falling-leaves" id="fallingLeaves"></div>
+  <div
+    class="falling-leaves"
+    id="fallingLeaves"
+  ></div>
+
+  <!-- ======================================
+       TOP INFO
+  ======================================= -->
 
   <div class="top-info">
+
     <span>
-      <strong>Made By Hazel</strong>
+      <strong>Hazel Wiki</strong>
     </span>
 
     <span>
-      Email: hire.dev.hazel@gmail.com
+      Minecraft Development Documentation
     </span>
 
     <span>
-      Discord: dev.hazel
+      Made by Hazel
     </span>
+
   </div>
 
+  <!-- ======================================
+       NAVBAR
+  ======================================= -->
+
   <nav>
-    <a href="#home" class="logo">
-      hazel<span>.</span>
+
+    <a
+      href="#home"
+      class="logo"
+      data-link="home"
+    >
+
+      <img
+        src="pfp.png"
+        alt="Hazel"
+      >
+
+      hazel<span>.</span>wiki
+
     </a>
 
-    <ul class="nav-links">
-      <li>
-        <a href="#about">About</a>
-      </li>
+    <div class="nav-right">
 
-      <li>
-        <a href="#skills">Skills</a>
-      </li>
+      <a
+        class="github-button"
+        href="https://github.com/dev-hazei"
+        target="_blank"
+        rel="noopener noreferrer"
+      >
+        GitHub ↗
+      </a>
 
-      <li>
-        <a href="#projects">Projects</a>
-      </li>
+    </div>
 
-      <li>
-        <a href="#services">Services</a>
-      </li>
-
-      <li>
-        <a href="#contact" class="nav-button">
-          Hire me
-        </a>
-      </li>
-    </ul>
   </nav>
 
-  <main>
+  <!-- ======================================
+       MAIN LAYOUT
+  ======================================= -->
 
-    <section class="hero" id="home">
-      <div class="container">
+  <div class="layout">
 
-        <div class="hero-grid">
+    <!-- ====================================
+         SIDEBAR
+    ===================================== -->
 
-          <div class="reveal">
+    <aside class="sidebar">
 
-            <div class="eyebrow">
-              <span class="status-dot"></span>
-              Available for projects
-            </div>
+      <div class="sidebar-title">
+        Documentation
+      </div>
 
-            <h1>
-              Hey, I'm
-              <span class="accent">Hazel.</span>
-              <br>
-              I build Minecraft.
-            </h1>
+      <input
+        id="search"
+        class="search"
+        type="search"
+        placeholder="Search wiki..."
+        autocomplete="off"
+        aria-label="Search wiki"
+      >
 
-            <p class="hero-description">
-              Minecraft developer with
-              <strong>3+ years of experience</strong>,
-              specializing in plugins, server development,
-              and turning ideas into polished experiences.
-            </p>
+      <ul class="wiki-nav">
 
-            <div class="hero-buttons">
+        <li class="nav-category">
+          Getting Started
+        </li>
 
-              <a
-                href="#projects"
-                class="button button-primary"
-              >
-                View my work
-                <span>↗</span>
-              </a>
+        <li>
+          <button
+            type="button"
+            data-page="home"
+            class="active"
+          >
+            Home
+          </button>
+        </li>
 
-              <a
-                href="#contact"
-                class="button button-secondary"
-              >
-                Let's work together
-              </a>
+        <li>
+          <button
+            type="button"
+            data-page="getting-started"
+          >
+            Getting Started
+          </button>
+        </li>
 
-            </div>
+        <li>
+          <button
+            type="button"
+            data-page="installation"
+          >
+            Installation
+          </button>
+        </li>
+
+        <li class="nav-category">
+          My Projects
+        </li>
+
+        <li>
+          <button
+            type="button"
+            data-page="projects"
+          >
+            Projects
+          </button>
+        </li>
+
+        <li>
+          <button
+            type="button"
+            data-page="fast-crystals"
+          >
+            Fast-Crystals
+          </button>
+        </li>
+
+        <li>
+          <button
+            type="button"
+            data-page="grim"
+          >
+            Grim
+          </button>
+        </li>
+
+        <li>
+          <button
+            type="button"
+            data-page="discord-tickets"
+          >
+            Discord-Tickets-bot
+          </button>
+        </li>
+
+        <li class="nav-category">
+          Development
+        </li>
+
+        <li>
+          <button
+            type="button"
+            data-page="plugins"
+          >
+            Plugin Development
+          </button>
+        </li>
+
+        <li>
+          <button
+            type="button"
+            data-page="commands"
+          >
+            Commands
+          </button>
+        </li>
+
+        <li>
+          <button
+            type="button"
+            data-page="configuration"
+          >
+            Configuration
+          </button>
+        </li>
+
+        <li>
+          <button
+            type="button"
+            data-page="database"
+          >
+            Database
+          </button>
+        </li>
+
+        <li class="nav-category">
+          Reference
+        </li>
+
+        <li>
+          <button
+            type="button"
+            data-page="performance"
+          >
+            Performance
+          </button>
+        </li>
+
+        <li>
+          <button
+            type="button"
+            data-page="faq"
+          >
+            FAQ
+          </button>
+        </li>
+
+      </ul>
+
+    </aside>
+
+    <!-- ====================================
+         CONTENT
+    ===================================== -->
+
+    <main>
+
+      <!-- ==================================
+           HOME
+      =================================== -->
+
+      <article
+        class="wiki-page active"
+        id="page-home"
+      >
+
+        <div class="welcome">
+
+          <div class="eyebrow">
+
+            <span class="status-dot"></span>
+
+            Hazel Development Wiki
 
           </div>
 
-          <div class="profile-wrap reveal">
+          <h1>
 
-            <div class="profile-ring">
+            Welcome to the
+            <span class="accent">
+              wiki.
+            </span>
 
-              <img
-                src="pfp.png"
-                alt="Hazel's profile picture"
-                class="profile"
-              >
+          </h1>
 
-            </div>
+          <p class="lead">
 
-            <div class="leaf a">🌸</div>
-            <div class="leaf b">🌸</div>
+            Documentation, projects, guides,
+            references, and development information
+            from Hazel.
+
+          </p>
+
+          <div class="tags">
+
+            <span class="tag">
+              Minecraft
+            </span>
+
+            <span class="tag">
+              Java
+            </span>
+
+            <span class="tag">
+              Paper
+            </span>
+
+            <span class="tag">
+              Folia
+            </span>
+
+            <span class="tag">
+              TypeScript
+            </span>
+
+            <span class="tag">
+              Discord
+            </span>
 
           </div>
 
         </div>
 
-      </div>
-    </section>
+        <div class="quick-links">
 
-    <section id="about">
-      <div class="container">
+          <a
+            href="#projects"
+            class="quick-link"
+            data-link="projects"
+          >
 
-        <div class="reveal">
+            <strong>
+              My Projects →
+            </strong>
 
-          <div class="section-label">
-            01 / About
-          </div>
+            <span>
+              Explore Hazel's public projects
+              and repositories.
+            </span>
 
-          <h2 class="section-title">
-            A developer who loves building.
-          </h2>
+          </a>
 
-          <p class="section-description">
-            I focus on creating reliable Minecraft plugins
-            and server experiences that feel clean,
-            responsive, and enjoyable to use.
+          <a
+            href="#fast-crystals"
+            class="quick-link"
+            data-link="fast-crystals"
+          >
+
+            <strong>
+              Fast-Crystals →
+            </strong>
+
+            <span>
+              Paper and Folia-supported
+              Minecraft crystal optimization plugin.
+            </span>
+
+          </a>
+
+          <a
+            href="#grim"
+            class="quick-link"
+            data-link="grim"
+          >
+
+            <strong>
+              Grim →
+            </strong>
+
+            <span>
+              Advanced customized Grim Anti-Cheat
+              configuration.
+            </span>
+
+          </a>
+
+          <a
+            href="#discord-tickets"
+            class="quick-link"
+            data-link="discord-tickets"
+          >
+
+            <strong>
+              Discord Tickets →
+            </strong>
+
+            <span>
+              Custom Discord ticket bot written
+              in TypeScript.
+            </span>
+
+          </a>
+
+        </div>
+
+        <div class="card">
+
+          <h3>
+            About Hazel
+          </h3>
+
+          <p>
+            Hazel is a Minecraft developer focused on
+            plugins, server development, optimization,
+            custom systems, and turning ideas into
+            polished experiences.
+          </p>
+
+          <p>
+            This wiki contains information about Hazel's
+            projects as well as useful Minecraft
+            development documentation.
           </p>
 
         </div>
 
-        <div class="about-grid">
+        <div class="card">
 
-          <div class="card reveal">
+          <h3>
+            Contact
+          </h3>
 
-            <h3>
-              What I do
-            </h3>
+          <p>
+            Email:
+            <strong style="color: var(--pink-bright);">
+              hire.dev.hazel@gmail.com
+            </strong>
+          </p>
 
-            <p>
-              From custom gameplay systems and server
-              features to complete server development,
-              I build solutions around what your community
-              actually needs.
-            </p>
-
-          </div>
-
-          <div class="card reveal">
-
-            <h3>
-              How I work
-            </h3>
-
-            <p>
-              I care about clean code, performance,
-              maintainability, and making sure the final
-              result feels polished rather than rushed.
-            </p>
-
-          </div>
-
-        </div>
-
-        <div class="stats reveal">
-
-          <div class="stat">
-            <span class="stat-number">3+</span>
-
-            <span class="stat-label">
-              Years Experience
-            </span>
-          </div>
-
-          <div class="stat">
-            <span class="stat-number">∞</span>
-
-            <span class="stat-label">
-              Ideas to Build
-            </span>
-          </div>
-
-          <div class="stat">
-            <span class="stat-number">24/7</span>
-
-            <span class="stat-label">
-              Code Brain
-            </span>
-          </div>
-
-        </div>
-
-      </div>
-    </section>
-
-    <section id="skills">
-      <div class="container">
-
-        <div class="reveal">
-
-          <div class="section-label">
-            02 / Skills
-          </div>
-
-          <h2 class="section-title">
-            Tools I work with.
-          </h2>
-
-          <p class="section-description">
-            Technologies and tools I use to bring
-            Minecraft projects to life.
+          <p>
+            Discord:
+            <strong style="color: var(--pink-bright);">
+              dev.hazel
+            </strong>
           </p>
 
         </div>
 
-        <div class="skills reveal">
+      </article>
 
-          <span class="skill">Java</span>
-          <span class="skill">Paper</span>
-          <span class="skill">Spigot</span>
-          <span class="skill">Bukkit API</span>
-          <span class="skill">Minecraft Plugins</span>
-          <span class="skill">Server Development</span>
-          <span class="skill">Plugin Configuration</span>
-          <span class="skill">YAML</span>
-          <span class="skill">SQL</span>
-          <span class="skill">Server Optimization</span>
+      <!-- ==================================
+           GETTING STARTED
+      =================================== -->
 
-        </div>
+      <article
+        class="wiki-page"
+        id="page-getting-started"
+      >
 
-      </div>
-    </section>
+        <div class="page-header">
 
-    <section id="projects">
-      <div class="container">
-
-        <div class="reveal">
-
-          <div class="section-label">
-            03 / Projects
+          <div class="eyebrow">
+            Getting Started
           </div>
 
-          <h2 class="section-title">
-            Things I've built.
-          </h2>
+          <h1>
+            Getting
+            <span class="accent">
+              Started
+            </span>
+          </h1>
 
-          <p class="section-description">
-            A few examples of the kind of work I can create.
-            Replace these cards with your actual projects.
+          <p class="lead">
+            Everything you need before beginning
+            Minecraft plugin development.
           </p>
 
         </div>
 
-        <div class="projects-grid">
+        <h2>
+          Recommended tools
+        </h2>
 
-          <article class="card project reveal">
+        <div class="card">
+
+          <ul>
+
+            <li>
+              Java Development Kit (JDK)
+            </li>
+
+            <li>
+              IntelliJ IDEA or another Java IDE
+            </li>
+
+            <li>
+              Paper Minecraft server
+            </li>
+
+            <li>
+              Git
+            </li>
+
+            <li>
+              Maven or Gradle
+            </li>
+
+          </ul>
+
+        </div>
+
+        <h2>
+          Basic project structure
+        </h2>
+
+        <pre><code>MyPlugin/
+├── src/
+│   └── main/
+│       ├── java/
+│       │   └── me/hazel/myplugin/
+│       │       └── MyPlugin.java
+│       │
+│       └── resources/
+│           └── plugin.yml
+│
+├── pom.xml
+└── README.md</code></pre>
+
+      </article>
+
+      <!-- ==================================
+           INSTALLATION
+      =================================== -->
+
+      <article
+        class="wiki-page"
+        id="page-installation"
+      >
+
+        <div class="page-header">
+
+          <div class="eyebrow">
+            Installation
+          </div>
+
+          <h1>
+            <span class="accent">
+              Installation
+            </span>
+          </h1>
+
+          <p class="lead">
+            General instructions for installing
+            Minecraft plugins.
+          </p>
+
+        </div>
+
+        <h2>
+          1. Download the plugin
+        </h2>
+
+        <p>
+          Download the plugin's compiled JAR file
+          from its GitHub release or build output.
+        </p>
+
+        <h2>
+          2. Open your server directory
+        </h2>
+
+        <p>
+          Find the <code>plugins</code> folder inside
+          your Minecraft server.
+        </p>
+
+        <h2>
+          3. Place the plugin inside plugins
+        </h2>
+
+        <pre><code>server/
+└── plugins/
+    └── MyPlugin.jar</code></pre>
+
+        <h2>
+          4. Restart the server
+        </h2>
+
+        <p>
+          Restart the Minecraft server and check
+          the console for errors or dependency issues.
+        </p>
+
+        <div class="card">
+
+          <h3>
+            Important
+          </h3>
+
+          <p>
+            Always check the project's documentation
+            for its required Minecraft version,
+            dependencies, and supported server software.
+          </p>
+
+        </div>
+
+      </article>
+
+      <!-- ==================================
+           PROJECTS
+      =================================== -->
+
+      <article
+        class="wiki-page"
+        id="page-projects"
+      >
+
+        <div class="page-header">
+
+          <div class="eyebrow">
+            Hazel Projects
+          </div>
+
+          <h1>
+            Things I've
+            <span class="accent">
+              built.
+            </span>
+          </h1>
+
+          <p class="lead">
+            A collection of Hazel's public projects,
+            plugins, configurations, and applications.
+          </p>
+
+        </div>
+
+        <div class="projects">
+
+          <!-- FAST CRYSTALS -->
+
+          <article class="project-card">
 
             <div class="project-icon">
               ⚡
             </div>
 
+            <div class="project-language">
+
+              <span class="language-dot java"></span>
+
+              Java
+
+            </div>
+
             <h3>
-              Custom Plugin
+              Fast-Crystals
             </h3>
 
             <p>
-              A custom Minecraft plugin designed around
-              unique gameplay mechanics and a smooth
-              player experience.
+              Paper plugin with Folia support that
+              optimizes crystaling speeds for Minecraft.
             </p>
 
             <div class="project-tags">
-              <span>Java</span>
-              <span>Paper</span>
-              <span>Plugin</span>
+
+              <span class="tag">
+                Paper
+              </span>
+
+              <span class="tag">
+                Folia
+              </span>
+
+              <span class="tag">
+                Minecraft
+              </span>
+
+              <span class="tag">
+                Java
+              </span>
+
             </div>
+
+            <a
+              class="project-button"
+              href="https://github.com/dev-hazei/Fast-Crystals"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              View on GitHub ↗
+            </a>
 
           </article>
 
-          <article class="card project reveal">
+          <!-- GRIM -->
+
+          <article class="project-card">
 
             <div class="project-icon">
-              🌸
+              🛡️
+            </div>
+
+            <div class="project-language">
+
+              <span class="language-dot java"></span>
+
+              Java
+
             </div>
 
             <h3>
-              Server Development
+              Grim
             </h3>
 
             <p>
-              Server-side development, configuration,
-              optimization, and custom systems built
-              to scale with a community.
+              An advanced Grim Anti-Cheat configuration
+              forked from GrimAnticheat/Grim and heavily
+              customized for a more complete Grim setup.
             </p>
 
             <div class="project-tags">
-              <span>Server</span>
-              <span>Optimization</span>
-              <span>Systems</span>
+
+              <span class="tag">
+                Grim
+              </span>
+
+              <span class="tag">
+                Anti-Cheat
+              </span>
+
+              <span class="tag">
+                Configuration
+              </span>
+
+              <span class="tag">
+                Minecraft
+              </span>
+
             </div>
+
+            <a
+              class="project-button"
+              href="https://github.com/dev-hazei/Grim"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              View on GitHub ↗
+            </a>
 
           </article>
 
-          <article class="card project reveal">
+          <!-- DISCORD TICKETS -->
+
+          <article class="project-card">
 
             <div class="project-icon">
-              ⌘
+              🎫
+            </div>
+
+            <div class="project-language">
+
+              <span class="language-dot typescript"></span>
+
+              TypeScript
+
             </div>
 
             <h3>
-              Your Project
+              Discord-Tickets-bot
             </h3>
 
             <p>
-              Have a Minecraft idea? This could be your
-              next project, plugin, or server system
-              right here.
+              A custom Discord ticket bot designed
+              for managing support tickets and
+              community communication.
             </p>
 
             <div class="project-tags">
-              <span>Custom</span>
-              <span>Development</span>
-              <span>Let's build</span>
+
+              <span class="tag">
+                TypeScript
+              </span>
+
+              <span class="tag">
+                Discord
+              </span>
+
+              <span class="tag">
+                Bot
+              </span>
+
+              <span class="tag">
+                Tickets
+              </span>
+
             </div>
+
+            <a
+              class="project-button"
+              href="https://github.com/dev-hazei/Discord-Tickets-bot"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              View on GitHub ↗
+            </a>
 
           </article>
 
         </div>
 
-      </div>
-    </section>
+      </article>
 
-    <section id="services">
-      <div class="container">
+      <!-- ==================================
+           FAST CRYSTALS
+      =================================== -->
 
-        <div class="reveal">
+      <article
+        class="wiki-page"
+        id="page-fast-crystals"
+      >
 
-          <div class="section-label">
-            04 / Services
+        <div class="page-header">
+
+          <div class="eyebrow">
+            Project · Minecraft
           </div>
 
-          <h2 class="section-title">
-            What I can build for you.
-          </h2>
+          <h1>
+            Fast-
+            <span class="accent">
+              Crystals
+            </span>
+          </h1>
 
-          <p class="section-description">
-            Whether you're starting a server or need
-            a custom feature, I can help turn the concept
-            into something real.
+          <p class="lead">
+            A Paper plugin with Folia support designed
+            to optimize crystaling speeds.
           </p>
 
         </div>
 
-        <div class="services">
+        <div class="tags">
 
-          <div class="card reveal">
+          <span class="tag">
+            Java
+          </span>
 
-            <div class="service-number">
-              01
-            </div>
+          <span class="tag">
+            Paper
+          </span>
 
-            <h3>
-              Custom Plugins
-            </h3>
+          <span class="tag">
+            Folia
+          </span>
 
-            <p>
-              Custom gameplay mechanics, commands,
-              GUIs, integrations, systems, and features
-              built around your requirements.
-            </p>
-
-          </div>
-
-          <div class="card reveal">
-
-            <div class="service-number">
-              02
-            </div>
-
-            <h3>
-              Server Development
-            </h3>
-
-            <p>
-              Build and configure the systems behind
-              your Minecraft server, from gameplay
-              features to performance and quality-of-life.
-            </p>
-
-          </div>
-
-          <div class="card reveal">
-
-            <div class="service-number">
-              03
-            </div>
-
-            <h3>
-              Optimization
-            </h3>
-
-            <p>
-              Improve server performance, clean up
-              configurations, and identify areas that
-              can make your server run more efficiently.
-            </p>
-
-          </div>
+          <span class="tag">
+            Minecraft
+          </span>
 
         </div>
 
-      </div>
-    </section>
+        <div class="card">
 
-    <section id="contact">
-      <div class="container">
-
-        <div class="contact-box reveal">
-
-          <div class="section-label">
-            05 / Contact
-          </div>
-
-          <h2>
-            Have an idea?
-          </h2>
+          <h3>
+            Overview
+          </h3>
 
           <p>
-            I'm open to Minecraft development projects,
-            custom plugins, server work, and interesting
-            ideas. Let's build something.
+            Fast-Crystals is a Minecraft plugin focused
+            on improving crystaling speeds while
+            supporting modern Paper-based server
+            environments.
           </p>
-
-          <div class="contact-links">
-
-            <div class="contact-link">
-              Email: hire.dev.hazel@gmail.com
-            </div>
-
-            <div class="contact-link">
-              Discord: dev.hazel
-            </div>
-
-          </div>
 
         </div>
 
-      </div>
-    </section>
+        <h2>
+          Supported platforms
+        </h2>
 
-  </main>
+        <div class="table-wrap">
+
+          <table>
+
+            <thead>
+              <tr>
+                <th>
+                  Platform
+                </th>
+
+                <th>
+                  Support
+                </th>
+              </tr>
+            </thead>
+
+            <tbody>
+
+              <tr>
+                <td>
+                  Paper
+                </td>
+
+                <td>
+                  Supported
+                </td>
+              </tr>
+
+              <tr>
+                <td>
+                  Folia
+                </td>
+
+                <td>
+                  Supported
+                </td>
+              </tr>
+
+            </tbody>
+
+          </table>
+
+        </div>
+
+        <h2>
+          Repository
+        </h2>
+
+        <p>
+          View the source code, releases, issues,
+          and project information on GitHub.
+        </p>
+
+        <a
+          class="project-button"
+          href="https://github.com/dev-hazei/Fast-Crystals"
+          target="_blank"
+          rel="noopener noreferrer"
+          style="width: fit-content;"
+        >
+          Fast-Crystals on GitHub ↗
+        </a>
+
+      </article>
+
+      <!-- ==================================
+           GRIM
+      =================================== -->
+
+      <article
+        class="wiki-page"
+        id="page-grim"
+      >
+
+        <div class="page-header">
+
+          <div class="eyebrow">
+            Project · Anti-Cheat
+          </div>
+
+          <h1>
+            <span class="accent">
+              Grim
+            </span>
+          </h1>
+
+          <p class="lead">
+            An advanced Grim Anti-Cheat configuration
+            with extensive customization.
+          </p>
+
+        </div>
+
+        <div class="tags">
+
+          <span class="tag">
+            Java
+          </span>
+
+          <span class="tag">
+            Grim
+          </span>
+
+          <span class="tag">
+            Anti-Cheat
+          </span>
+
+          <span class="tag">
+            Minecraft
+          </span>
+
+        </div>
+
+        <div class="card">
+
+          <h3>
+            Overview
+          </h3>
+
+          <p>
+            This project is forked from
+            GrimAnticheat/Grim and provides an advanced
+            configuration designed to extensively
+            customize Grim's behavior.
+          </p>
+
+        </div>
+
+        <h2>
+          Original project
+        </h2>
+
+        <p>
+          The project is based on Grim Anti-Cheat.
+        </p>
+
+        <a
+          class="project-button"
+          href="https://github.com/GrimAnticheat/Grim"
+          target="_blank"
+          rel="noopener noreferrer"
+          style="width: fit-content;"
+        >
+          Original Grim Repository ↗
+        </a>
+
+        <h2>
+          Hazel's version
+        </h2>
+
+        <p>
+          You can find Hazel's customized version
+          and configuration on GitHub.
+        </p>
+
+        <a
+          class="project-button"
+          href="https://github.com/dev-hazei/Grim"
+          target="_blank"
+          rel="noopener noreferrer"
+          style="width: fit-content;"
+        >
+          Hazel's Grim Repository ↗
+        </a>
+
+      </article>
+
+      <!-- ==================================
+           DISCORD TICKETS
+      =================================== -->
+
+      <article
+        class="wiki-page"
+        id="page-discord-tickets"
+      >
+
+        <div class="page-header">
+
+          <div class="eyebrow">
+            Project · Discord
+          </div>
+
+          <h1>
+            Discord-
+            <span class="accent">
+              Tickets-bot
+            </span>
+          </h1>
+
+          <p class="lead">
+            A custom Discord ticket bot built with
+            TypeScript.
+          </p>
+
+        </div>
+
+        <div class="tags">
+
+          <span class="tag">
+            TypeScript
+          </span>
+
+          <span class="tag">
+            Discord
+          </span>
+
+          <span class="tag">
+            Bot
+          </span>
+
+          <span class="tag">
+            Tickets
+          </span>
+
+        </div>
+
+        <div class="card">
+
+          <h3>
+            Overview
+          </h3>
+
+          <p>
+            Discord-Tickets-bot is a custom Discord
+            bot focused on creating and managing
+            support tickets for communities.
+          </p>
+
+        </div>
+
+        <h2>
+          Technology
+        </h2>
+
+        <div class="table-wrap">
+
+          <table>
+
+            <thead>
+
+              <tr>
+                <th>
+                  Technology
+                </th>
+
+                <th>
+                  Usage
+                </th>
+              </tr>
+
+            </thead>
+
+            <tbody>
+
+              <tr>
+                <td>
+                  TypeScript
+                </td>
+
+                <td>
+                  Bot development
+                </td>
+              </tr>
+
+              <tr>
+                <td>
+                  Discord
+                </td>
+
+                <td>
+                  Community and ticket system
+                </td>
+              </tr>
+
+            </tbody>
+
+          </table>
+
+        </div>
+
+        <h2>
+          Repository
+        </h2>
+
+        <a
+          class="project-button"
+          href="https://github.com/dev-hazei/Discord-Tickets-bot"
+          target="_blank"
+          rel="noopener noreferrer"
+          style="width: fit-content;"
+        >
+          Discord-Tickets-bot on GitHub ↗
+        </a>
+
+      </article>
+
+      <!-- ==================================
+           PLUGIN DEVELOPMENT
+      =================================== -->
+
+      <article
+        class="wiki-page"
+        id="page-plugins"
+      >
+
+        <div class="page-header">
+
+          <div class="eyebrow">
+            Development
+          </div>
+
+          <h1>
+            Plugin
+            <span class="accent">
+              Development
+            </span>
+          </h1>
+
+          <p class="lead">
+            Building Minecraft plugins with Java,
+            Paper, Bukkit, and related APIs.
+          </p>
+
+        </div>
+
+        <h2>
+          Main class
+        </h2>
+
+        <p>
+          A basic Bukkit or Paper plugin starts with
+          a class extending <code>JavaPlugin</code>.
+        </p>
+
+        <pre><code>package me.hazel.myplugin;
+
+import org.bukkit.plugin.java.JavaPlugin;
+
+public class MyPlugin extends JavaPlugin {
+
+    @Override
+    public void onEnable() {
+        getLogger().info("MyPlugin enabled!");
+    }
+
+    @Override
+    public void onDisable() {
+        getLogger().info("MyPlugin disabled!");
+    }
+}</code></pre>
+
+        <h2>
+          plugin.yml
+        </h2>
+
+        <pre><code>name: MyPlugin
+version: 1.0.0
+main: me.hazel.myplugin.MyPlugin
+api-version: '1.21'</code></pre>
+
+        <h2>
+          Good practices
+        </h2>
+
+        <ul>
+
+          <li>
+            Keep your code modular.
+          </li>
+
+          <li>
+            Avoid unnecessary repeating tasks.
+          </li>
+
+          <li>
+            Validate player input.
+          </li>
+
+          <li>
+            Use configuration files for customizable values.
+          </li>
+
+          <li>
+            Avoid heavy operations on the main thread.
+          </li>
+
+        </ul>
+
+      </article>
+
+      <!-- ==================================
+           COMMANDS
+      =================================== -->
+
+      <article
+        class="wiki-page"
+        id="page-commands"
+      >
+
+        <div class="page-header">
+
+          <div class="eyebrow">
+            Development
+          </div>
+
+          <h1>
+            <span class="accent">
+              Commands
+            </span>
+          </h1>
+
+          <p class="lead">
+            Creating commands for Minecraft plugins.
+          </p>
+
+        </div>
+
+        <h2>
+          Example command
+        </h2>
+
+        <pre><code>public class HelloCommand
+        implements CommandExecutor {
+
+    @Override
+    public boolean onCommand(
+        CommandSender sender,
+        Command command,
+        String label,
+        String[] args
+    ) {
+
+        sender.sendMessage(
+            "§dHello from Hazel!"
+        );
+
+        return true;
+    }
+}</code></pre>
+
+        <h2>
+          Command configuration
+        </h2>
+
+        <pre><code>commands:
+  hello:
+    description: Says hello
+    usage: /hello</code></pre>
+
+      </article>
+
+      <!-- ==================================
+           CONFIGURATION
+      =================================== -->
+
+      <article
+        class="wiki-page"
+        id="page-configuration"
+      >
+
+        <div class="page-header">
+
+          <div class="eyebrow">
+            Development
+          </div>
+
+          <h1>
+            <span class="accent">
+              Configuration
+            </span>
+          </h1>
+
+          <p class="lead">
+            Using YAML configuration files to make
+            Minecraft plugins customizable.
+          </p>
+
+        </div>
+
+        <h2>
+          Example config.yml
+        </h2>
+
+        <pre><code>messages:
+  welcome: "&amp;dWelcome to the server!"
+  goodbye: "&amp;7See you next time!"
+
+settings:
+  enabled: true
+  max-players: 100
+
+database:
+  host: localhost
+  port: 3306
+  name: minecraft</code></pre>
+
+        <h2>
+          Why use configuration?
+        </h2>
+
+        <ul>
+
+          <li>
+            Server owners can customize your plugin.
+          </li>
+
+          <li>
+            Messages do not need to be hard-coded.
+          </li>
+
+          <li>
+            Settings can be changed without recompiling.
+          </li>
+
+          <li>
+            Plugins become easier to maintain.
+          </li>
+
+        </ul>
+
+      </article>
+
+      <!-- ==================================
+           DATABASE
+      =================================== -->
+
+      <article
+        class="wiki-page"
+        id="page-database"
+      >
+
+        <div class="page-header">
+
+          <div class="eyebrow">
+            Development
+          </div>
+
+          <h1>
+            <span class="accent">
+              Database
+            </span>
+          </h1>
+
+          <p class="lead">
+            Persist player and server data safely.
+          </p>
+
+        </div>
+
+        <h2>
+          Common choices
+        </h2>
+
+        <div class="table-wrap">
+
+          <table>
+
+            <thead>
+
+              <tr>
+
+                <th>
+                  Database
+                </th>
+
+                <th>
+                  Best for
+                </th>
+
+              </tr>
+
+            </thead>
+
+            <tbody>
+
+              <tr>
+
+                <td>
+                  SQLite
+                </td>
+
+                <td>
+                  Small servers and local data
+                </td>
+
+              </tr>
+
+              <tr>
+
+                <td>
+                  MySQL
+                </td>
+
+                <td>
+                  Production servers
+                </td>
+
+              </tr>
+
+              <tr>
+
+                <td>
+                  MariaDB
+                </td>
+
+                <td>
+                  Larger server networks
+                </td>
+
+              </tr>
+
+            </tbody>
+
+          </table>
+
+        </div>
+
+        <div class="card">
+
+          <h3>
+            Performance
+          </h3>
+
+          <p>
+            Avoid running expensive database operations
+            synchronously on the main Minecraft server
+            thread.
+          </p>
+
+        </div>
+
+      </article>
+
+      <!-- ==================================
+           PERFORMANCE
+      =================================== -->
+
+      <article
+        class="wiki-page"
+        id="page-performance"
+      >
+
+        <div class="page-header">
+
+          <div class="eyebrow">
+            Reference
+          </div>
+
+          <h1>
+            Server
+            <span class="accent">
+              Performance
+            </span>
+          </h1>
+
+          <p class="lead">
+            Practical approaches to keeping Minecraft
+            servers responsive and efficient.
+          </p>
+
+        </div>
+
+        <h2>
+          Common problems
+        </h2>
+
+        <ul>
+
+          <li>
+            Too many entities.
+          </li>
+
+          <li>
+            Expensive repeating tasks.
+          </li>
+
+          <li>
+            Large synchronous database queries.
+          </li>
+
+          <li>
+            Poorly optimized plugins.
+          </li>
+
+          <li>
+            Excessive chunk loading.
+          </li>
+
+        </ul>
+
+        <h2>
+          Plugin development
+        </h2>
+
+        <p>
+          Avoid doing expensive calculations every tick.
+          If something does not need to happen every tick,
+          use a longer interval.
+        </p>
+
+        <pre><code>Bukkit.getScheduler().runTaskTimer(
+    plugin,
+    task,
+    20L,
+    20L * 5
+);</code></pre>
+
+        <div class="card">
+
+          <h3>
+            Rule of thumb
+          </h3>
+
+          <p>
+            Profile first, optimize second. Find the
+            actual bottleneck before making complicated
+            optimizations.
+          </p>
+
+        </div>
+
+      </article>
+
+      <!-- ==================================
+           FAQ
+      =================================== -->
+
+      <article
+        class="wiki-page"
+        id="page-faq"
+      >
+
+        <div class="page-header">
+
+          <div class="eyebrow">
+            Reference
+          </div>
+
+          <h1>
+            Frequently Asked
+            <span class="accent">
+              Questions
+            </span>
+          </h1>
+
+        </div>
+
+        <h2>
+          What platforms does Hazel develop for?
+        </h2>
+
+        <p>
+          Hazel's Minecraft work includes Paper,
+          Folia-supported projects, and the broader
+          Bukkit ecosystem.
+        </p>
+
+        <h2>
+          What languages does Hazel use?
+        </h2>
+
+        <p>
+          Current public projects include Java and
+          TypeScript.
+        </p>
+
+        <h2>
+          Where are Hazel's projects hosted?
+        </h2>
+
+        <p>
+          Hazel's public projects are available on GitHub.
+        </p>
+
+        <a
+          class="project-button"
+          href="https://github.com/dev-hazei"
+          target="_blank"
+          rel="noopener noreferrer"
+          style="width: fit-content;"
+        >
+          Visit dev-hazei on GitHub ↗
+        </a>
+
+        <h2>
+          How can I contact Hazel?
+        </h2>
+
+        <div class="card">
+
+          <p>
+            Email:
+            <strong style="color: var(--pink-bright);">
+              hire.dev.hazel@gmail.com
+            </strong>
+          </p>
+
+          <p>
+            Discord:
+            <strong style="color: var(--pink-bright);">
+              dev.hazel
+            </strong>
+          </p>
+
+        </div>
+
+      </article>
+
+    </main>
+
+  </div>
+
+  <!-- ======================================
+       FOOTER
+  ======================================= -->
 
   <footer>
-    <div class="container">
-      Built <span>♥</span> by Hazel · Minecraft Developer
-    </div>
+
+    Built
+    <span>♥</span>
+    by Hazel · Minecraft Developer
+
   </footer>
 
   <script>
+
+    /* ======================================
+       FALLING PETALS
+    ======================================= */
+
     const fallingLeaves =
-      document.getElementById("fallingLeaves");
+      document.getElementById(
+        "fallingLeaves"
+      );
 
     const leafCount =
-      window.innerWidth <= 600 ? 12 : 20;
+      window.innerWidth <= 600
+        ? 12
+        : 20;
 
-    for (let i = 0; i < leafCount; i++) {
+    for (
+      let i = 0;
+      i < leafCount;
+      i++
+    ) {
+
       const leaf =
         document.createElement("div");
 
-      leaf.className = "falling-leaf";
+      leaf.className =
+        "falling-leaf";
 
       const size =
         Math.random() * 7 + 7;
@@ -1524,10 +2997,14 @@
         Math.random() * -18;
 
       const drift =
-        (Math.random() * 180 - 90) + "px";
+        (
+          Math.random() * 180 - 90
+        ) + "px";
 
       const rotation =
-        Math.random() * 720 - 360 + "deg";
+        (
+          Math.random() * 720 - 360
+        ) + "deg";
 
       leaf.style.left =
         left + "%";
@@ -1540,11 +3017,15 @@
 
       leaf.style.animationDuration =
         duration + "s, " +
-        (Math.random() * 2 + 2.5) + "s";
+        (
+          Math.random() * 2 + 2.5
+        ) + "s";
 
       leaf.style.animationDelay =
         delay + "s, " +
-        (Math.random() * -3) + "s";
+        (
+          Math.random() * -3
+        ) + "s";
 
       leaf.style.setProperty(
         "--drift",
@@ -1559,84 +3040,239 @@
       leaf.style.opacity =
         Math.random() * 0.3 + 0.25;
 
-      fallingLeaves.appendChild(leaf);
+      fallingLeaves.appendChild(
+        leaf
+      );
     }
 
-    document
-      .querySelectorAll('a[href^="#"]')
-      .forEach(link => {
+    /* ======================================
+       WIKI NAVIGATION
+    ======================================= */
 
-        link.addEventListener("click", function(event) {
+    const buttons =
+      document.querySelectorAll(
+        ".wiki-nav button"
+      );
 
-          const targetId =
-            this.getAttribute("href");
+    const pages =
+      document.querySelectorAll(
+        ".wiki-page"
+      );
 
-          if (targetId === "#") {
-            return;
-          }
+    function showPage(
+      pageName,
+      updateHash = true
+    ) {
 
-          const target =
-            document.querySelector(targetId);
+      const page =
+        document.getElementById(
+          "page-" + pageName
+        );
 
-          if (!target) {
-            return;
-          }
+      if (!page) {
+        return;
+      }
 
-          event.preventDefault();
-
-          const nav =
-            document.querySelector("nav");
-
-          const navHeight =
-            nav ? nav.offsetHeight : 0;
-
-          const targetPosition =
-            target.getBoundingClientRect().top +
-            window.pageYOffset -
-            navHeight -
-            15;
-
-          window.scrollTo({
-            top: targetPosition,
-            behavior: "smooth"
-          });
-
-        });
-
-      });
-
-    const observer =
-      new IntersectionObserver(
-        entries => {
-
-          entries.forEach(entry => {
-
-            if (entry.isIntersecting) {
-
-              entry.target.classList.add("visible");
-
-              observer.unobserve(entry.target);
-
-            }
-
-          });
-
-        },
-        {
-          threshold: 0.12
+      pages.forEach(
+        item => {
+          item.classList.remove(
+            "active"
+          );
         }
       );
 
-    document
-      .querySelectorAll(".reveal")
-      .forEach(element => {
+      buttons.forEach(
+        button => {
+          button.classList.remove(
+            "active"
+          );
+        }
+      );
 
-        observer.observe(element);
+      page.classList.add(
+        "active"
+      );
 
+      const button =
+        document.querySelector(
+          `[data-page="${pageName}"]`
+        );
+
+      if (button) {
+        button.classList.add(
+          "active"
+        );
+      }
+
+      if (updateHash) {
+
+        history.replaceState(
+          null,
+          "",
+          "#" + pageName
+        );
+
+      }
+
+      window.scrollTo({
+        top: 0,
+        behavior: "smooth"
       });
 
+    }
+
+    buttons.forEach(
+      button => {
+
+        button.addEventListener(
+          "click",
+          () => {
+
+            showPage(
+              button.dataset.page
+            );
+
+          }
+        );
+
+      }
+    );
+
+    /* ======================================
+       QUICK LINKS
+    ======================================= */
+
+    document
+      .querySelectorAll(
+        "[data-link]"
+      )
+      .forEach(
+        link => {
+
+          link.addEventListener(
+            "click",
+            event => {
+
+              const page =
+                link.dataset.link;
+
+              if (
+                !document.getElementById(
+                  "page-" + page
+                )
+              ) {
+                return;
+              }
+
+              event.preventDefault();
+
+              showPage(page);
+
+            }
+          );
+
+        }
+      );
+
+    /* ======================================
+       HASH ROUTING
+    ======================================= */
+
+    function loadHash() {
+
+      const hash =
+        window.location.hash
+          .replace("#", "")
+          .trim();
+
+      if (!hash) {
+        return;
+      }
+
+      const page =
+        document.getElementById(
+          "page-" + hash
+        );
+
+      if (page) {
+
+        showPage(
+          hash,
+          false
+        );
+
+      }
+
+    }
+
+    window.addEventListener(
+      "hashchange",
+      loadHash
+    );
+
+    loadHash();
+
+    /* ======================================
+       SEARCH
+    ======================================= */
+
+    const search =
+      document.getElementById(
+        "search"
+      );
+
+    search.addEventListener(
+      "input",
+      () => {
+
+        const query =
+          search.value
+            .toLowerCase()
+            .trim();
+
+        buttons.forEach(
+          button => {
+
+            const page =
+              document.getElementById(
+                "page-" +
+                button.dataset.page
+              );
+
+            if (!page) {
+              return;
+            }
+
+            const text =
+              (
+                button.textContent +
+                " " +
+                page.textContent
+              ).toLowerCase();
+
+            button
+              .parentElement
+              .style
+              .display =
+                !query ||
+                text.includes(query)
+                  ? ""
+                  : "none";
+
+          }
+        );
+
+      }
+    );
+
+    /* ======================================
+       MOUSE GLOW
+    ======================================= */
+
     const glow =
-      document.querySelector(".glow.one");
+      document.querySelector(
+        ".glow.one"
+      );
 
     window.addEventListener(
       "mousemove",
@@ -1649,22 +3285,16 @@
           event.clientY - 225;
 
         glow.style.transform =
-          `translate(${x * 0.04}px, ${y * 0.04}px)`;
+          `translate(
+            ${x * 0.04}px,
+            ${y * 0.04}px
+          )`;
 
       }
     );
 
-    const reducedMotion =
-      window.matchMedia(
-        "(prefers-reduced-motion: reduce)"
-      );
-
-    if (reducedMotion.matches) {
-      document.documentElement.style.scrollBehavior =
-        "auto";
-    }
   </script>
 
 </body>
 </html>
-```
+
